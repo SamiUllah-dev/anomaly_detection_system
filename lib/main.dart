@@ -1,3 +1,4 @@
+import 'package:anomaly_detection_system/features/auth/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -14,6 +15,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp();
+    return const MaterialApp(
+      home: LoginScreen(),
+    );
   }
 }
