@@ -11,6 +11,7 @@
 migrate_working_dir/
 
 pubspec.lock
+# server/node_modules
 
 # IntelliJ related
 *.iml
