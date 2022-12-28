@@ -1,12 +1,14 @@
 import 'package:anomaly_detection_system/constants/global_variables.dart';
+import 'package:anomaly_detection_system/features/auth/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AuthScreen extends StatefulWidget {
+class AuthScreen extends ConsumerStatefulWidget {
   static const routeName = '/auth-screen';
   const AuthScreen({super.key});
 
   @override
-  State<AuthScreen> createState() => _AuthScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _AuthScreenState();
 }
 
 enum Auth {
@@ -14,8 +16,9 @@ enum Auth {
   signup,
 }
 
-class _AuthScreenState extends State<AuthScreen> {
+class _AuthScreenState extends ConsumerState<AuthScreen> {
   var _auth = Auth.signup;
+  var _isLoading = false;
   final _signupFormKey = GlobalKey<FormState>();
   final _signinFormKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
@@ -24,16 +27,31 @@ class _AuthScreenState extends State<AuthScreen> {
 
   void signUp() async {
     if (!_signupFormKey.currentState!.validate()) {
-      print('This ran');
       return;
     }
-    print('Else ran');
+    setState(() => _isLoading = true);
+
+    await ref.read(authControllerProvider).signUpUser(
+          name: _nameController.text,
+          email: _emailController.text,
+          password: _passwordController.text,
+          context: context,
+        );
+    setState(() => _isLoading = false);
   }
 
   void signIn() async {
     if (!_signinFormKey.currentState!.validate()) {
       return;
     }
+    setState(() => _isLoading = true);
+
+    await ref.read(authControllerProvider).signInUser(
+          email: _emailController.text,
+          password: _passwordController.text,
+          context: context,
+        );
+    setState(() => _isLoading = false);
   }
 
   @override
@@ -109,7 +127,11 @@ class _AuthScreenState extends State<AuthScreen> {
                             onPressed: signUp,
                             style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(double.infinity, 50)),
-                            child: const Text('Sign Up'),
+                            child: _isLoading
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : const Text('Sign Up'),
                           ),
                         ],
                       ),
@@ -164,7 +186,11 @@ class _AuthScreenState extends State<AuthScreen> {
                             onPressed: signIn,
                             style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(double.infinity, 50)),
-                            child: const Text('Sign In'),
+                            child: _isLoading
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : const Text('Sign In'),
                           )
                         ],
                       ),
@@ -193,8 +219,8 @@ class CreateFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      decoration: const InputDecoration(
-          border: OutlineInputBorder(), hintText: 'Password'),
+      decoration: InputDecoration(
+          border: const OutlineInputBorder(), hintText: hintText),
       obscureText: obscureText,
       controller: controller,
       validator: ((value) {
