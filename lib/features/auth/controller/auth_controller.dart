@@ -22,6 +22,10 @@ class AuthController {
     );
   }
 
+  void getUserData({required BuildContext context, required WidgetRef ref}) {
+    _authRepository.getUserData(context: context, ref: ref);
+  }
+
   Future<void> signIn({
     required String email,
     required String password,

@@ -67,7 +67,44 @@ class AuthRepository {
                 HomeScreen.routeName, (route) => false);
           });
     } catch (e) {
-      print('Error');
+      rethrow;
+    }
+  }
+
+  void getUserData(
+      {required BuildContext context, required WidgetRef ref}) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('x-auth-token');
+
+      if (token == null) {
+        prefs.setString('x-auth-token', '');
+        return;
+      }
+      final url = Uri.parse('$uri/api/tokenIsValid');
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': token,
+        },
+      );
+
+      final tokenisValid = jsonDecode(response.body) as bool;
+
+      if (tokenisValid) {
+        final response = await http.get(
+          Uri.parse('$uri/'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'x-auth-token': token,
+          },
+        );
+
+        ref.read(userProvider.notifier).setUser(response.body);
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 }
