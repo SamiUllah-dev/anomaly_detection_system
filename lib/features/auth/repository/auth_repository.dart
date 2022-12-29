@@ -71,6 +71,12 @@ class AuthRepository {
     }
   }
 
+  Future<void> logout({required WidgetRef ref}) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('x-auth-token', '');
+    ref.read(userProvider.notifier).setToken('');
+  }
+
   void getUserData(
       {required BuildContext context, required WidgetRef ref}) async {
     try {

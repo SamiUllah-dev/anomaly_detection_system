@@ -12,6 +12,10 @@ class UserProvider extends StateNotifier<User> {
   void setUser(JsonData user) {
     state = User.fromJson(user);
   }
+
+  void setToken(String token) {
+    state = state.copyWith(token: token);
+  }
 }
 
 final userProvider = StateNotifierProvider<UserProvider, User>((ref) {

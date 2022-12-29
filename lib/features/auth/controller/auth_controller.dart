@@ -39,4 +39,8 @@ class AuthController {
       ref: ref,
     );
   }
+
+  Future<void> logout({required WidgetRef ref}) async {
+    await _authRepository.logout(ref: ref);
+  }
 }
