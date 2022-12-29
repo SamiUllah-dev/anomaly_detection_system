@@ -26,11 +26,13 @@ class AuthController {
     required String email,
     required String password,
     required BuildContext context,
+    required WidgetRef ref,
   }) async {
     await _authRepository.signInUser(
       email: email,
       password: password,
       context: context,
+      ref: ref,
     );
   }
 }

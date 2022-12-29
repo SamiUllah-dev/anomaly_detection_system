@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:anomaly_detection_system/constants/error_handling.dart';
 import 'package:anomaly_detection_system/constants/global_variables.dart';
 import 'package:anomaly_detection_system/constants/utils.dart';
+import 'package:anomaly_detection_system/features/auth/screens/auth_screen.dart';
+import 'package:anomaly_detection_system/features/home/screens/home_screen.dart';
 import 'package:anomaly_detection_system/models/user.dart';
 import 'package:anomaly_detection_system/providers/user_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,7 +22,8 @@ class AuthRepository {
     required BuildContext context,
   }) async {
     try {
-      final user = User(id: '', name: name, email: email, password: password);
+      final user =
+          User(id: '', name: name, email: email, password: password, token: '');
       final url = Uri.parse('$uri/api/signup');
       final response =
           await http.post(url, body: user.toJson(), headers: <String, String>{
@@ -44,7 +47,8 @@ class AuthRepository {
     required WidgetRef ref,
   }) async {
     try {
-      final user = User(id: '', name: '', email: email, password: password);
+      final user =
+          User(id: '', name: '', email: email, password: password, token: '');
       final url = Uri.parse('$uri/api/signin');
       final response =
           await http.post(url, body: user.toJson(), headers: <String, String>{
@@ -59,6 +63,8 @@ class AuthRepository {
             ref.read(userProvider.notifier).setUser(response.body);
             await sharedPreferences.setString(
                 'x-auth-token', jsonDecode(response.body)['token']);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                HomeScreen.routeName, (route) => false);
           });
     } catch (e) {
       print('Error');

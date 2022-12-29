@@ -50,6 +50,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
           email: _emailController.text,
           password: _passwordController.text,
           context: context,
+          ref: ref,
         );
     setState(() => _isLoading = false);
   }
