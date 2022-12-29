@@ -66,6 +66,7 @@ class AuthRepository {
             Navigator.of(context).pushNamedAndRemoveUntil(
                 HomeScreen.routeName, (route) => false);
           });
+      print('SIGNED IN');
     } catch (e) {
       rethrow;
     }

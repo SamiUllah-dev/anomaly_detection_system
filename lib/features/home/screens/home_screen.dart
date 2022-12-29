@@ -1,5 +1,6 @@
 import 'package:anomaly_detection_system/constants/global_variables.dart';
 import 'package:anomaly_detection_system/features/auth/controller/auth_controller.dart';
+import 'package:anomaly_detection_system/features/community/screens/community_screen.dart';
 import 'package:anomaly_detection_system/features/emergency/screens/emergency_screen.dart';
 import 'package:anomaly_detection_system/providers/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +82,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 50),
                 ),
-                onPressed: () {},
+                onPressed: () =>
+                    Navigator.of(context).pushNamed(CommunityScreen.routeName),
                 icon: const Icon(FontAwesomeIcons.peopleGroup),
                 label: const Text('Community People'),
               ),

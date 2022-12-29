@@ -1,7 +1,7 @@
 import 'package:anomaly_detection_system/features/auth/screens/auth_screen.dart';
+import 'package:anomaly_detection_system/features/community/screens/community_screen.dart';
 import 'package:anomaly_detection_system/features/emergency/screens/emergency_screen.dart';
 import 'package:anomaly_detection_system/features/home/screens/home_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -22,6 +22,12 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         settings: settings,
         builder: ((context) => const EmergencyScreen()),
+      );
+
+    case CommunityScreen.routeName:
+      return MaterialPageRoute(
+        settings: settings,
+        builder: ((context) => const CommunityScreen()),
       );
 
     default:
