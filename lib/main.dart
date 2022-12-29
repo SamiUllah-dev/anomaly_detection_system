@@ -38,8 +38,15 @@ class _MyAppState extends ConsumerState<MyApp> {
         colorScheme: const ColorScheme.light(
           primary: GlobalVariables.secondaryColor,
         ),
+        textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(foregroundColor: Colors.black54)),
         appBarTheme: const AppBarTheme(
-          elevation: 0,
+          elevation: 8,
+          foregroundColor: Colors.black54,
+          actionsIconTheme: IconThemeData(
+            color: Colors.black54,
+          ),
+          toolbarTextStyle: TextStyle(color: Colors.black54),
           iconTheme: IconThemeData(
             color: Colors.black,
           ),
