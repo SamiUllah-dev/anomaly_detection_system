@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:anomaly_detection_system/constants/error_handling.dart';
 import 'package:anomaly_detection_system/constants/global_variables.dart';
 import 'package:anomaly_detection_system/constants/utils.dart';
 import 'package:anomaly_detection_system/models/user.dart';
+import 'package:anomaly_detection_system/providers/user_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 final authRepositoryProvider = Provider((ref) => AuthRepository());
 
@@ -37,6 +41,7 @@ class AuthRepository {
     required String email,
     required String password,
     required BuildContext context,
+    required WidgetRef ref,
   }) async {
     try {
       final user = User(id: '', name: '', email: email, password: password);
@@ -45,7 +50,16 @@ class AuthRepository {
           await http.post(url, body: user.toJson(), headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });
-      httpErrorHandler(response: response, context: context, onSuccess: () {});
+      httpErrorHandler(
+          response: response,
+          context: context,
+          onSuccess: () async {
+            SharedPreferences sharedPreferences =
+                await SharedPreferences.getInstance();
+            ref.read(userProvider.notifier).setUser(response.body);
+            await sharedPreferences.setString(
+                'x-auth-token', jsonDecode(response.body)['token']);
+          });
     } catch (e) {
       print('Error');
     }
