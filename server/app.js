@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 const authRouter = require("./routes/auth");
+const communityRoute = require("./routes/community");
 
 const PORT = 3000;
 const app = express();
@@ -9,6 +10,7 @@ const DB =
   "mongodb+srv://samiullah:samiullah0604@cluster0.gwewkjf.mongodb.net/?retryWrites=true&w=majority";
 app.use(express.json());
 app.use(authRouter);
+app.use(communityRoute);
 
 mongoose.set("strictQuery", false);
 mongoose
