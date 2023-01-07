@@ -4,6 +4,8 @@ import 'package:anomaly_detection_system/providers/people_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../constants/utils.dart';
+
 class CommunityScreen extends ConsumerStatefulWidget {
   static const routeName = '/community-people';
   const CommunityScreen({super.key});
@@ -40,60 +42,73 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
             )
           : Consumer(builder: (context, ref, child) {
               final data = ref.watch(peopleDataProvider);
-              return ListView.builder(
-                itemCount: data.length,
-                itemBuilder: ((context, index) => Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Card(
-                        elevation: 08,
-                        child: ListTile(
-                          title: Text(
-                            data[index].name,
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                          subtitle: Text(data[index].phoneNumber),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                splashRadius: 18,
-                                onPressed: () async {
-                                  Person? updatedPerson =
-                                      await _createOrUpdatePersonDialog(
-                                          context: context,
-                                          existingPerson: data[index]);
+              return data.isEmpty
+                  ? const Center(
+                      child: Text('No Community Person Added',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    )
+                  : ListView.builder(
+                      itemCount: data.length,
+                      itemBuilder: ((context, index) => Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Card(
+                              elevation: 08,
+                              child: ListTile(
+                                title: Text(
+                                  data[index].name,
+                                  style: const TextStyle(fontSize: 18),
+                                ),
+                                subtitle: Text(data[index].phoneNumber),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      splashRadius: 18,
+                                      onPressed: () async {
+                                        Person? updatedPerson =
+                                            await _createOrUpdatePersonDialog(
+                                                context: context,
+                                                existingPerson: data[index]);
 
-                                  ref
-                                      .read(peopleDataProvider.notifier)
-                                      .updatePerson(
-                                          context: context,
-                                          person: updatedPerson!);
-                                },
-                                icon: const Icon(
-                                  Icons.edit,
-                                  color: GlobalVariables.secondaryColor,
+                                        ref
+                                            .read(peopleDataProvider.notifier)
+                                            .updatePerson(
+                                                context: context,
+                                                person: updatedPerson!);
+                                      },
+                                      icon: const Icon(
+                                        Icons.edit,
+                                        color: GlobalVariables.secondaryColor,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      splashRadius: 18,
+                                      onPressed: () async {
+                                        await ref
+                                            .read(peopleDataProvider.notifier)
+                                            .deletePerson(
+                                                context: context,
+                                                person: data[index]);
+                                      },
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                    IconButton(
+                                        onPressed: () => makePhoneCall(
+                                            data[index].phoneNumber),
+                                        icon: const Icon(Icons.call))
+                                  ],
                                 ),
                               ),
-                              IconButton(
-                                splashRadius: 18,
-                                onPressed: () async {
-                                  await ref
-                                      .read(peopleDataProvider.notifier)
-                                      .deletePerson(
-                                          context: context,
-                                          person: data[index]);
-                                },
-                                icon: const Icon(
-                                  Icons.delete,
-                                  color: Colors.red,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    )),
-              );
+                            ),
+                          )),
+                    );
             }),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: GlobalVariables.secondaryColor,
@@ -148,6 +163,7 @@ Future<Person?> _createOrUpdatePersonDialog(
                       if (value!.isEmpty) return 'field required';
                       return null;
                     },
+                    keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), hintText: 'Phone number'),
                   ),

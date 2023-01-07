@@ -7,31 +7,31 @@ import 'package:flutter/material.dart';
 Route<dynamic> onGenerateRoute(RouteSettings settings) {
   switch (settings.name) {
     case AuthScreen.routeName:
-      return MaterialPageRoute(
+      return MaterialPageRoute<AuthScreen>(
         settings: settings,
         builder: ((context) => const AuthScreen()),
       );
 
     case HomeScreen.routeName:
-      return MaterialPageRoute(
+      return MaterialPageRoute<HomeScreen>(
         settings: settings,
         builder: ((context) => const HomeScreen()),
       );
 
     case EmergencyScreen.routeName:
-      return MaterialPageRoute(
+      return MaterialPageRoute<EmergencyScreen>(
         settings: settings,
         builder: ((context) => const EmergencyScreen()),
       );
 
     case CommunityScreen.routeName:
-      return MaterialPageRoute(
+      return MaterialPageRoute<CommunityScreen>(
         settings: settings,
         builder: ((context) => const CommunityScreen()),
       );
 
     default:
-      return MaterialPageRoute(
+      return MaterialPageRoute<Scaffold>(
         builder: ((context) => const Scaffold(
               body: Center(
                 child: Text(

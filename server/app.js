@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 
 const authRouter = require("./routes/auth");
 const communityRoute = require("./routes/community");
+const faceRegistration = require("./routes/face_registration");
 
 const PORT = 3000;
 const app = express();
@@ -11,6 +12,7 @@ const DB =
 app.use(express.json());
 app.use(authRouter);
 app.use(communityRoute);
+app.use(faceRegistration);
 
 mongoose.set("strictQuery", false);
 mongoose

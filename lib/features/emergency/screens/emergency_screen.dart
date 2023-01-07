@@ -3,17 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../constants/utils.dart';
+
 class EmergencyScreen extends StatelessWidget {
   static const routeName = '/emergencyScreen';
   const EmergencyScreen({super.key});
-
-  Future<void> _makePhoneCall(String phoneNumber) async {
-    final Uri launchUri = Uri(
-      scheme: 'tel',
-      path: phoneNumber,
-    );
-    await launchUrl(launchUri);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +28,7 @@ class EmergencyScreen extends StatelessWidget {
                   phoneNumberLabel: '1122',
                   icondata: FontAwesomeIcons.peopleGroup,
                   onMakeCall: (number) {
-                    _makePhoneCall(number);
+                    makePhoneCall(number);
                   },
                 ),
                 const SizedBox(height: 16),
@@ -43,7 +37,7 @@ class EmergencyScreen extends StatelessWidget {
                   phoneNumberLabel: '0800-111-11',
                   icondata: Icons.local_police,
                   onMakeCall: (number) {
-                    _makePhoneCall(number);
+                    makePhoneCall(number);
                   },
                 ),
                 const SizedBox(height: 16),
@@ -52,7 +46,7 @@ class EmergencyScreen extends StatelessWidget {
                   phoneNumberLabel: '115',
                   icondata: FontAwesomeIcons.truckMedical,
                   onMakeCall: (number) {
-                    _makePhoneCall(number);
+                    makePhoneCall(number);
                   },
                 ),
                 SizedBox(height: 16),
@@ -61,7 +55,7 @@ class EmergencyScreen extends StatelessWidget {
                   phoneNumberLabel: '1101',
                   icondata: Icons.local_police,
                   onMakeCall: (number) {
-                    _makePhoneCall(number);
+                    makePhoneCall(number);
                   },
                 ),
               ],
