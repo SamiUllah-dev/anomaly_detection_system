@@ -7,8 +7,7 @@ const faceRegistration = require("./routes/face_registration");
 
 const PORT = 3000;
 const app = express();
-const DB =
-  "mongodb+srv://samiullah:samiullah0604@cluster0.gwewkjf.mongodb.net/?retryWrites=true&w=majority";
+const DB = "<your mongodb driver>";
 app.use(express.json());
 app.use(authRouter);
 app.use(communityRoute);
